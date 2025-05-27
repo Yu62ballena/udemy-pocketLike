@@ -1,5 +1,8 @@
 "use server";
 
+// https://claude.ai/chat/04249d93-994d-471a-84af-6251fc633ec7
+// ここのチャットでこの中のコードを説明してもらった
+
 import { JSDOM } from "jsdom";
 
 export interface ArticleData {
@@ -13,6 +16,7 @@ export interface ArticleData {
 }
 
 export async function extractUrlData(formData: FormData): Promise<ArticleData> {
+
   const url = formData.get("url") as string;
 
   if (!url) {
@@ -20,6 +24,8 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
   }
 
   try {
+    // ブラウザとしてリクエストを送って、レスポンスを受け取る
+    // ボットを避けるため
     const response = await fetch(url, {
       headers: {
         "User-Agent":
@@ -31,11 +37,15 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
+    // 受け取ったレスポンスの本文部分（html）を取得
     const html = await response.text();
+    // ブラウザと同じDOMの構造に変換
+    // これによりdocument.querySelectorなどが使えるようになる
     const dom = new JSDOM(html);
+    // ドキュメントオブジェクトを取り出し
     const document = dom.window.document;
 
-    // メタデータを取得
+    // サイトのデータ（headタグ内に書いているメタデータ）を取得
     const getMetaContent = (property: string): string => {
       const selectors = [
         `meta[property="${property}"]`,
@@ -55,7 +65,7 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
       return "";
     };
 
-    // 記事本文を取得（一般的なセレクターを試行）
+    // 記事情報を取得
     const getContent = (): string => {
       const contentSelectors = [
         "article",
@@ -93,6 +103,7 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
       return "";
     };
 
+    // getMetaContentとgetContentを使って、url、siteName等を取得
     const articleData: ArticleData = {
       url,
       siteName:
@@ -124,6 +135,7 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
       content: getContent(),
     };
 
+    // 取得したメタデータ・本文データをリターン
     return articleData;
   } catch (error) {
     console.error("URL解析エラー:", error);
