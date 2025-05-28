@@ -13,6 +13,8 @@ export interface ArticleData {
   updatedAt: string;
   thumbnail: string;
   content: string;
+  isLiked?: boolean,
+  isArchived?: boolean,
 }
 
 export async function extractUrlData(formData: FormData): Promise<ArticleData> {

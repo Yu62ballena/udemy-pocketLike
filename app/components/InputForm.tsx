@@ -1,20 +1,38 @@
-import { extractUrlData, ArticleData } from "../actions/extract-url-data";
+import { checkUrlExists } from "../actions/articles/check-duplicate";
+import { saveArticle } from "../actions/articles/save-article";
+import { extractUrlData } from "../actions/extract-url-data";
 
+function InputForm() {
+  const getSiteData = async (formData: FormData) => {
+    "use server";
+    try {
+      const url = formData.get("url") as string;
 
-interface InputFormProps {
-  addArticleData: (newArticle: ArticleData) => void;
-}
-
-function InputForm({addArticleData}:InputFormProps) {
-
-    const getSiteData = async (formData: FormData) => {
-      try {
-        const result = await extractUrlData(formData);
-        addArticleData(result)
-      } catch (error) {
-        console.log(error);
+      // urlの重複チェック
+      const isDuplicate = await checkUrlExists(url);
+      if (isDuplicate) {
+        console.log("この記事はすでに登録されています");
+        return;
       }
-    };
+
+      // 一時的なユーザーIDを定義
+      // あとでログイン中のユーザーのユーザーIDを取得するコードに差し替える
+      const UserId = "temp-user-123";
+
+      // 重複がないことを確認できたら、URLからサイトのデータを取得
+      const result = await extractUrlData(formData);
+      // addArticleData(result);
+      const saveResult = await saveArticle(result, UserId);
+
+      //
+      if (saveResult?.success) {
+        console.log("記事が保存されました。");
+        console.log("保存結果", saveResult);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <form
