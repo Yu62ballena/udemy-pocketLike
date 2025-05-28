@@ -10,7 +10,7 @@ function Header() {
         <InputForm />
         <UserIcon />
       </header>
-      <hr className="mb-12" />
+      <hr className="mb-10" />
     </>
   );
 }

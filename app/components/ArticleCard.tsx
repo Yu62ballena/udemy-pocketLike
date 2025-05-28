@@ -1,19 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { ArticleData } from "../actions/extract-url-data";
 
 import { FaRegHeart, FaArchive } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { CiCircleList } from "react-icons/ci";
+import { Article } from "@prisma/client";
+import { deleteArticle } from "../actions/articles/delete-article";
 
 type ArticleListsProps = {
-  articleData: ArticleData;
-}
+  articleData: Article;
+};
 
-function ArticleCard({articleData}: ArticleListsProps) {
-  
-  // console.log("articleData", articleData);
+function ArticleCard({ articleData }: ArticleListsProps) {
 
   return (
     <>
@@ -43,7 +42,28 @@ function ArticleCard({articleData}: ArticleListsProps) {
                 <FaRegHeart />
                 <CiCircleList />
                 <FaArchive />
-                <FaRegTrashCan />
+
+                {/* デリートボタン */}
+                {articleData.isArchived === true && (
+                  <form action={deleteArticle}>
+                    <input
+                      type="hidden"
+                      name="articleId"
+                      value={articleData.id}
+                    />
+                    <button
+                      type="submit"
+                      className="cursor-pointer hover:text-red-500 transition-colors"
+                      aria-label="記事を削除"
+                      onClick={(e) => {
+                        if (!confirm("この記事を削除しますか？"))
+                          e.preventDefault();
+                      }}
+                    >
+                      <FaRegTrashCan />
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
           </div>
