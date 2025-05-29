@@ -5,6 +5,7 @@ import { Article } from "@prisma/client";
 import { toggleLike } from "../actions/articles/toggle-like";
 import { useOptimistic, useTransition } from "react";
 import { deleteArticle } from "../actions/articles/delete-article";
+import LikeButton from "./LikeButton";
 
 type ArticleListsProps = {
   articleData: Article;
@@ -38,22 +39,7 @@ function CardIcons({ articleData }: ArticleListsProps) {
   return (
     <div className="flex justify-between gap-3 items-center">
       {/* お気に入りボタン */}
-      <form action={handleToggleLike}>
-        <input
-          type="hidden"
-          name="articleId"
-          disabled={isPending}
-          value={articleData.id}
-        />
-        <button
-          type="submit"
-          className={`cursor-pointer transition-colors ${
-            optimisticArticle.isLiked ? "text-red-500" : "text-black"
-          }`}
-        >
-          {optimisticArticle.isLiked ? <FaHeart /> : <FaRegHeart />}
-        </button>
-      </form>
+     <LikeButton articleData={articleData} />
 
       {/* カテゴリ */}
       <CiCircleList />
