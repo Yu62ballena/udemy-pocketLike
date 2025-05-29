@@ -2,17 +2,43 @@
 
 import Image from "next/image";
 
-import { FaRegHeart, FaArchive } from "react-icons/fa";
+import { FaRegHeart, FaArchive, FaHeart } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { CiCircleList } from "react-icons/ci";
 import { Article } from "@prisma/client";
 import { deleteArticle } from "../actions/articles/delete-article";
+import { toggleLike } from "../actions/articles/toggle-like";
+import { useOptimistic, useTransition } from "react";
 
 type ArticleListsProps = {
   articleData: Article;
 };
 
 function ArticleCard({ articleData }: ArticleListsProps) {
+  const [isPending, startTransition] = useTransition();
+
+  // 楽観的更新用のstate
+  const [optimisticArticle, setOptimisticArticle] = useOptimistic(
+    articleData,
+    (currentArticle, newIsLiked: boolean) => ({
+      ...currentArticle,
+      isLiked: newIsLiked,
+    })
+  );
+
+  // お気に入り切り替え関数
+  const handleToggleLike = () => {
+    startTransition(async () => {
+      // 楽観的更新
+      const newIsLiked = !optimisticArticle.isLiked;
+      setOptimisticArticle(newIsLiked);
+
+      // サーバーアクションの実行
+      const formData = new FormData();
+      formData.append("articleId", articleData.id);
+      await toggleLike(formData);
+    });
+  };
 
   return (
     <>
@@ -29,18 +55,47 @@ function ArticleCard({ articleData }: ArticleListsProps) {
             </div>
 
             {/* description / 記事抜粋 */}
-            <div>
+            <div className="mb-4">
               <p>{articleData.description}</p>
             </div>
 
             {/* 日時・アイコン */}
             <div className="flex justify-between mt-auto">
               <span>
-                {new Date(articleData.updatedAt).toLocaleString("ja-JP")}
+                {articleData.publishedAt
+                  ? new Date(articleData.publishedAt).toLocaleDateString(
+                      "ja-JP",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )
+                  : "公開日時データなし"}
               </span>
               <div className="flex justify-between gap-3 items-center">
-                <FaRegHeart />
+                {/* お気に入りボタン */}
+                <form action={handleToggleLike}>
+                  <input
+                    type="hidden"
+                    name="articleId"
+                    disabled={isPending}
+                    value={articleData.id}
+                  />
+                  <button
+                    type="submit"
+                    className={`cursor-pointer transition-colors ${
+                      articleData.isLiked ? "text-red-500" : "text-black"
+                    }`}
+                  >
+                    {optimisticArticle.isLiked ? <FaHeart /> : <FaRegHeart />}
+                  </button>
+                </form>
+
+                {/* カテゴリ */}
                 <CiCircleList />
+
+                {/* アーカイブボタン */}
                 <FaArchive />
 
                 {/* デリートボタン */}

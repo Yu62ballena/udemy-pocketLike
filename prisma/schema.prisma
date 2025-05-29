@@ -33,6 +33,7 @@ model Article {
   description String?
   thumbnail   String?
   content     String?  @db.Text
+  publishedAt DateTime?
   isLiked     Boolean  @default(false)
   isArchived  Boolean  @default(false)
   createdAt   DateTime @default(now())

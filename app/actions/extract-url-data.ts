@@ -10,7 +10,7 @@ export interface ArticleData {
   siteName: string;
   title: string;
   description: string;
-  updatedAt: string;
+  publishedAt: string;
   thumbnail: string;
   content: string;
   isLiked?: boolean,
@@ -124,7 +124,7 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
         getMetaContent("og:description") ||
         getMetaContent("twitter:description") ||
         "",
-      updatedAt:
+      publishedAt:
         getMetaContent("article:modified_time") ||
         getMetaContent("article:published_time") ||
         document.querySelector("time")?.getAttribute("datetime") ||

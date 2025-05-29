@@ -26,6 +26,7 @@ export async function saveArticle(articleData: ArticleData, userId: string) {
         description: articleData.description,
         thumbnail: articleData.thumbnail,
         content: articleData.content,
+        publishedAt: new Date(articleData.publishedAt), 
       },
     });
 
