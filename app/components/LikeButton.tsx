@@ -37,14 +37,15 @@ function LikeButton({ articleData }: ArticleListsProps) {
       <input
         type="hidden"
         name="articleId"
-        disabled={isPending}
         value={articleData.id}
       />
       <button
         type="submit"
         className={`cursor-pointer transition-colors ${
           optimisticArticle.isLiked ? "text-red-500" : "text-black"
-        }`}
+        } ${isPending ? "opacity-50" : ""}`}
+        disabled={isPending}
+        title={optimisticArticle.isLiked ? "お気に入りを解除" : "お気に入りにする"}
       >
         {optimisticArticle.isLiked ? <FaHeart /> : <FaRegHeart />}
       </button>

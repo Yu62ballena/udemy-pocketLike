@@ -1,7 +1,7 @@
-import { FaArchive } from "react-icons/fa";
-import { CiCircleList } from "react-icons/ci";
 import { Article } from "@prisma/client";
 import LikeButton from "./LikeButton";
+import CategoryButton from "./CategoryButton";
+import ArchiveButton from "./ArchiveButton";
 import DeleteButton from "./DeleteButton";
 
 type ArticleListsProps = {
@@ -14,11 +14,11 @@ function CardIcons({ articleData }: ArticleListsProps) {
       {/* お気に入りボタン */}
       <LikeButton articleData={articleData} />
 
-      {/* カテゴリ */}
-      <CiCircleList />
+      {/* カテゴリボタン */}
+      <CategoryButton articleData={articleData} />
 
       {/* アーカイブボタン */}
-      <FaArchive />
+      <ArchiveButton articleData={articleData} />
 
       {/* デリートボタン */}
       {articleData.isArchived === true && (
