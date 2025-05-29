@@ -21,7 +21,8 @@ function InputForm() {
 
       // 重複がないことを確認できたら、URLからサイトのデータを取得
       const result = await extractUrlData(formData);
-      // addArticleData(result);
+
+      // 取得したデータをDBに保存
       const saveResult = await saveArticle(result, UserId);
 
       //
