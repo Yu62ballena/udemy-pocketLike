@@ -4,6 +4,7 @@ import CardIcons from "./CardIcons";
 import CardImage from "./CardImage";
 import CardDate from "./CardDate";
 import { Article } from "@prisma/client";
+import Link from "next/link";
 
 type ArticleListsProps = {
   articleData: Article;
@@ -13,7 +14,14 @@ function ArticleCard({ articleData }: ArticleListsProps) {
   return (
     <>
       {articleData && (
-        <div className="border flex justify-between gap-8 p-4">
+        <div className="border flex justify-between gap-8 p-4 relative group hover:bg-gray-50 transition-colors">
+          <Link
+            href={articleData.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-0"
+            aria-label={`${articleData.title}を開く`}
+          />
           {/* 左側 */}
           <div className="w-3/4 flex flex-col">
             {/* タイトル部分 */}
@@ -34,12 +42,14 @@ function ArticleCard({ articleData }: ArticleListsProps) {
               <CardDate articleData={articleData} />
 
               {/* アイコン */}
-              <CardIcons articleData={articleData} />
+              <div className="relative z-20">
+                <CardIcons articleData={articleData} />
+              </div>
             </div>
           </div>
 
           {/* 右側 （サムネ）*/}
-          <div className="w-1/4">
+          <div className="w-1/4 pointer-events-none">
             <CardImage articleData={articleData} />
           </div>
         </div>
