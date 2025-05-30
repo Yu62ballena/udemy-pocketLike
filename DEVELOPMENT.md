@@ -1,6 +1,9 @@
 <!-- 一時的に固定のUserIdを使用している場所 -->
 ・ArticleLists　line8
 ・InputForm     line20
+・page.tsx
+・search-articles.ts
+
 
 <!-- 未実装の機能 -->
 ・認証

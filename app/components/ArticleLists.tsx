@@ -1,14 +1,14 @@
 import React from "react";
 import ArticleCard from "./ArticleCard";
 import { getArticles } from "../actions/articles/get-articles";
+import { Prisma } from "@prisma/client";
 
 type ArticleListsProps = {
-  title: string,
-  whereCondition: { userId: string; } | { isLiked: boolean; userId: string; } | { isArchived: boolean; userId: string; }
-}
+  title: string;
+  whereCondition: Prisma.ArticleWhereInput;
+};
 
-async function ArticleLists({title, whereCondition}: ArticleListsProps) {
-
+async function ArticleLists({ title, whereCondition }: ArticleListsProps) {
   const articles = await getArticles(whereCondition);
 
   // エラーハンドリング
