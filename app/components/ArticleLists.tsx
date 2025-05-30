@@ -30,7 +30,7 @@ async function ArticleLists({ title, whereCondition }: ArticleListsProps) {
   if (articles.data.length === 0) {
     return (
       <div className="w-4/5 px-4">
-        <h2 className="text-4xl font-bold">記事一覧</h2>
+        <h2 className="text-4xl font-bold">{title}</h2>
         <hr />
         <div className="p-4">
           <p className="text-gray-500">保存された記事がありません</p>
@@ -42,7 +42,7 @@ async function ArticleLists({ title, whereCondition }: ArticleListsProps) {
   return (
     <div className="w-4/5 px-4">
       <div className="flex justify-between mb-4">
-        <h2 className="text-4xl font-bold">記事一覧</h2>
+        <h2 className="text-4xl font-bold">{title}</h2>
         <div>
           <span>↑</span>
           <span>↓</span>

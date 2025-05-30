@@ -16,17 +16,14 @@ export default async function Home(props: HomeProps) {
   const listtype = resolvedSearchParams.listtype || "default";
   const searchQuery = resolvedSearchParams.q;
 
-  console.log("searchQuery:", searchQuery);
-  console.log("resolvedSearchParams:", resolvedSearchParams);
-
   const userId = "temp-user-123";
 
-  let title: string;
-  let whereCondition: Prisma.ArticleWhereInput;
+  let title: string = "記事一覧";
+  let whereCondition: Prisma.ArticleWhereInput = { userId };
 
   if (searchQuery) {
-    console.log("検索モードに入りました"); // デバッグ用
     title = `検索結果："${searchQuery}"`;
+
     whereCondition = {
       userId: userId,
       isArchived: false,
@@ -38,7 +35,6 @@ export default async function Home(props: HomeProps) {
       ],
     };
   } else {
-    console.log("通常モード");
     title = getPageTitle(listtype);
     whereCondition = getWhereCondition(listtype, userId);
   }
