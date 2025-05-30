@@ -15,6 +15,7 @@ function CardImage({ articleData }: ArticleListsProps) {
           alt={articleData.title}
           fill={true}
           priority
+          sizes="300px"
           onError={(e) => {
             // 画像が読み込めない場合の処理
             e.currentTarget.style.display = "none";
