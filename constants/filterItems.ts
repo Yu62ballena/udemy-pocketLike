@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { FaHeart, FaArchive } from "react-icons/fa";
+import { FaHeart, FaArchive, FaHome } from "react-icons/fa";
 import { LuNewspaper } from "react-icons/lu";
 
 export interface FilterItemsInterface {
@@ -17,6 +17,13 @@ export const filterItems: FilterItemsInterface[] = [
     listtype: "all",
     icon: LuNewspaper,
     href: "/?listtype=all",
+  },
+  {
+    id: "home",
+    name: "ホーム",
+    listtype: "home",
+    icon: FaHome,
+    href: "/",
   },
   {
     id: "favorite",

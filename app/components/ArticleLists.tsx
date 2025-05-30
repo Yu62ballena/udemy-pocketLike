@@ -2,18 +2,20 @@ import React from "react";
 import ArticleCard from "./ArticleCard";
 import { getArticles } from "../actions/articles/get-articles";
 
-async function ArticleLists() {
-  // 一時的なユーザーIDを定義
-  // あとでログイン中のユーザーのユーザーIDを取得するコードに差し替える
-  const UserId = "temp-user-123";
+type ArticleListsProps = {
+  title: string,
+  whereCondition: { userId: string; } | { isLiked: boolean; userId: string; } | { isArchived: boolean; userId: string; }
+}
 
-  const articles = await getArticles(UserId);
+async function ArticleLists({title, whereCondition}: ArticleListsProps) {
+
+  const articles = await getArticles(whereCondition);
 
   // エラーハンドリング
   if (!articles.success || !articles.data) {
     return (
       <div className="w-4/5 px-4">
-        <h2 className="text-4xl font-bold">記事一覧</h2>
+        <h2 className="text-4xl font-bold">{title}</h2>
         <hr />
         <div className="p-4">
           <p className="text-red-500">

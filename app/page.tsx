@@ -15,10 +15,9 @@ export default async function Home({ searchParams }: HomeProps) {
   const userId = "temp-user-123";
 
   const title = getPageTitle(listtype);
+  
+    // 一時的なユーザーIDを定義
   const whereCondition = getWhereCondition(listtype, userId);
-
-  console.log("title：", title);
-  console.log("whereCondition：", whereCondition);
 
   return (
     <div className="w-11/12 mx-auto">
@@ -26,7 +25,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
       <div className="flex justify-between gap-10">
         <Sidebar />
-        <ArticleLists />
+        <ArticleLists title={title} whereCondition={whereCondition} />
       </div>
     </div>
   );

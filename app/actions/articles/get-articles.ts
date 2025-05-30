@@ -9,13 +9,10 @@ export type GetArticlesResult = {
   success: boolean;
 };
 
-export async function getArticles(userId?: string): Promise<GetArticlesResult> {
+export async function getArticles(whereCondition: object): Promise<GetArticlesResult> {
   try {
     const articles = await prisma.article.findMany({
-      where: {
-        isArchived: false,
-        ...(userId && { userId: userId }),
-      },
+      where: whereCondition,
       orderBy: {
         createdAt: "desc",
       },
@@ -30,7 +27,7 @@ export async function getArticles(userId?: string): Promise<GetArticlesResult> {
     // 詳細なエラーログ
     console.error("記事取得エラー:", {
       error: err,
-      userId: userId,
+      whereCondition, 
       timestamp: new Date().toISOString(),
     });
 
