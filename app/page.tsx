@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import { getPageTitle, getWhereCondition } from "@/constants/filterItems";
 import { Prisma } from "@prisma/client";
 import { getArticles } from "./actions/articles/get-articles";
+// import ArticleLists from "./components/ArticleLists";
 
 interface HomeProps {
   searchParams: Promise<{
