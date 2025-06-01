@@ -5,8 +5,11 @@ import { getSiteData } from "../actions/articles/get-sitedata";
 import { redirectWithQuery } from "../actions/articles/redirect-with-query";
 import { urlRegistrationSchema } from "@/lib/validations/url-validation";
 import { searchQuerySchema } from "@/lib/validations/search-validation";
+import { useRouter } from "next/navigation";
 
 function InputForm() {
+  const router = useRouter();
+
   // インプットフォーム切り替えようstate
   const [isRegisterMode, setIsRegisterMode] = useState(false);
 
@@ -22,7 +25,9 @@ function InputForm() {
       try {
         // URL登録時の処理
         if (isRegisterMode) {
+          console.log("URL登録開始");
           const url = formData.get("url") as string;
+          console.log("URL:", url);
 
           // zodバリデーション
           const validationResult = urlRegistrationSchema.safeParse({ url });
@@ -36,12 +41,20 @@ function InputForm() {
             return;
           }
 
+          console.log("バリデーション通過");
+
           // ServerActionsの実行
           const result = await getSiteData(formData);
+          console.log("getSiteData結果:", result);
 
           if (result?.success) {
             // 成功時の処理（フォームクリアなど）
             console.log("記事保存成功！");
+
+            router.refresh();
+            console.log("router.refresh実行");
+          } else {
+            console.log("記事保存失敗");
           }
         } else {
           // 検索時の処理
@@ -61,7 +74,9 @@ function InputForm() {
           await redirectWithQuery(formData);
         }
       } catch (err) {
-        if(err instanceof Error && err.message.includes('NEXT_REDIRECT')) {
+        console.error("エラー発生:", err);
+
+        if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) {
           return;
         }
 

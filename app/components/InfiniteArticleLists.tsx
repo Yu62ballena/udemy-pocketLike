@@ -13,24 +13,34 @@ type InfiniteArticleListsProps = {
   initialHasMore: boolean;
 };
 
-function InfiniteArticleLists({ 
-  title, 
+function InfiniteArticleLists({
+  title,
   whereCondition,
   initialArticles,
   initialNextCursor,
-  initialHasMore
+  initialHasMore,
 }: InfiniteArticleListsProps) {
   const [articles, setArticles] = useState<Article[]>(initialArticles);
-  const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor);
+  const [nextCursor, setNextCursor] = useState<string | null>(
+    initialNextCursor
+  );
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [isLoading, setIsLoading] = useState(false);
+
+  // 初期データが変更されたときにstateをリセット
+  useEffect(() => {
+    console.log("初期データ更新：", initialArticles.length, "件");
+    setArticles(initialArticles);
+    setNextCursor(initialNextCursor);
+    setHasMore(initialHasMore);
+  }, [initialArticles, initialHasMore, initialNextCursor]);
 
   // 次のページを読み込む関数
   const loadMore = useCallback(async () => {
     if (!hasMore || isLoading || !nextCursor) return;
 
     setIsLoading(true);
-    
+
     try {
       const result = await getArticles(whereCondition, {
         cursor: nextCursor,
@@ -39,7 +49,7 @@ function InfiniteArticleLists({
 
       if (result.success && result.data) {
         // 既存の記事に新しい記事を追加
-        setArticles(prev => [...prev, ...result.data!]);
+        setArticles((prev) => [...prev, ...result.data!]);
         setNextCursor(result.nextCursor);
         setHasMore(result.hasMore);
       }
@@ -57,15 +67,15 @@ function InfiniteArticleLists({
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
-      
+
       // 下から200px以内に来たら次のページを読み込み
       if (scrollHeight - scrollTop - clientHeight < 200) {
         loadMore();
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore]);
 
   return (
@@ -78,7 +88,7 @@ function InfiniteArticleLists({
         </div>
       </div>
       <hr />
-      
+
       {/* 記事一覧 */}
       <div className="p-4 flex flex-col gap-4">
         {articles.map((article) => (
