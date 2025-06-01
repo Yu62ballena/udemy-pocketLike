@@ -1,8 +1,9 @@
-import ArticleLists from "./components/ArticleLists";
+import InfiniteArticleLists from "./components/InfiniteArticleLists";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { getPageTitle, getWhereCondition } from "@/constants/filterItems";
 import { Prisma } from "@prisma/client";
+import { getArticles } from "./actions/articles/get-articles";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -39,15 +40,45 @@ export default async function Home(props: HomeProps) {
     whereCondition = getWhereCondition(listtype, userId);
   }
 
+  // 最初のページを取得
+  const initialData = await getArticles(whereCondition, {
+    limit: 10,
+    includeTotalCount: true,
+  });
+
+  // initialDataが取得出来なかった場合の処理
+  if (!initialData.success || !initialData.data) {
+    return (
+      <div className="w-11/12 mx-auto">
+        <Header />
+        <div className="flex justify-between gap-10">
+          <Sidebar />
+          <div className="w-4/5 px-4">
+            <h2 className="text-4xl font-bold">{title}</h2>
+            <hr />
+            <div className="p-4">
+              <p className="text-red-500">
+                {initialData.error || "記事の取得に失敗しました"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-11/12 mx-auto">
       <Header />
 
       <div className="flex justify-between gap-10">
         <Sidebar />
-        <ArticleLists
+        <InfiniteArticleLists
           title={title}
           whereCondition={whereCondition}
+          initialArticles={initialData.data}
+          initialNextCursor={initialData.nextCursor}
+          initialHasMore={initialData.hasMore}
         />
       </div>
     </div>
