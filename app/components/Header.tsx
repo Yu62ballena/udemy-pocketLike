@@ -1,5 +1,5 @@
 import Logo from "./Logo";
-import InputForm from "./InputForm";
+import InputFormGroup from "./InputFormGroup";
 import UserIcon from "./UserIcon";
 
 function Header() {
@@ -7,7 +7,7 @@ function Header() {
     <>
       <header className="flex justify-between items-center h-16">
         <Logo />
-        <InputForm />
+        <InputFormGroup />
         <UserIcon />
       </header>
       <hr className="mb-10" />
