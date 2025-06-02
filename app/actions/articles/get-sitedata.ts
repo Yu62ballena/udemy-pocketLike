@@ -3,8 +3,10 @@
 import { checkUrlExists } from "./check-duplicate";
 import { saveArticle } from "./save-article";
 import { extractUrlData } from "../extract-url-data";
+import { getCurrentUserId } from "@/lib/auth-helpers";
 
 export const getSiteData = async (formData: FormData) => {
+
   try {
     const url = formData.get("url") as string;
 
@@ -13,7 +15,8 @@ export const getSiteData = async (formData: FormData) => {
       throw new Error("この記事はすでに登録されています");
     }
 
-    const UserId = "temp-user-123";
+    // const UserId = "temp-user-123";
+    const UserId = await getCurrentUserId();
     const result = await extractUrlData(formData);
     const saveResult = await saveArticle(result, UserId);
 

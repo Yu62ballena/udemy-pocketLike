@@ -1,5 +1,6 @@
 "use server";
 
+import { getCurrentUserId } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { Article } from "@prisma/client";
 
@@ -24,7 +25,8 @@ export async function searchArticles(
     }
 
     // 一時的なuserId
-    const userId = "temp-user-123";
+    // const userId = "temp-user-123";
+    const userId = await getCurrentUserId();
 
     const articles = await prisma.article.findMany({
       where: {

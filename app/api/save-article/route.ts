@@ -1,6 +1,7 @@
 import { checkUrlExists } from "@/app/actions/articles/check-duplicate";
 import { saveArticle } from "@/app/actions/articles/save-article";
 import { extractUrlData } from "@/app/actions/extract-url-data";
+import { getCurrentUserId } from "@/lib/auth-helpers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -39,8 +40,8 @@ export async function POST(request: NextRequest) {
     formData.append("url", url);
 
     // 一時的なユーザーIDを定義
-    // あとでログイン中のユーザーのユーザーIDを取得するコードに差し替える
-    const UserId = "temp-user-123";
+    // const UserId = "temp-user-123";
+    const UserId = await getCurrentUserId();
 
     // URLからサイトのデータを取得
     const articleData = await extractUrlData(formData);

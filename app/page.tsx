@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import { getPageTitle, getWhereCondition } from "@/constants/filterItems";
 import { Prisma } from "@prisma/client";
 import { getArticles } from "./actions/articles/get-articles";
+import { getCurrentUser } from "@/lib/auth-helpers";
 // import ArticleLists from "./components/ArticleLists";
 
 interface HomeProps {
@@ -14,11 +15,16 @@ interface HomeProps {
 }
 
 export default async function Home(props: HomeProps) {
+  // 認証
+  const user = await getCurrentUser();
+  console.log("user", user);
+
   const resolvedSearchParams = await props.searchParams;
   const listtype = resolvedSearchParams.listtype || "default";
   const searchQuery = resolvedSearchParams.q;
 
-  const userId = "temp-user-123";
+  // const userId = "temp-user-123";
+  const userId = user.id;
 
   let title: string = "記事一覧";
   let whereCondition: Prisma.ArticleWhereInput = { userId };
