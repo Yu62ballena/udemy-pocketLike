@@ -18,7 +18,7 @@ export async function toggleLike(formData: FormData) {
       },
     });
 
-    if(!article) {
+    if (!article) {
       throw new Error("記事が見つかりません");
     }
 
@@ -26,17 +26,19 @@ export async function toggleLike(formData: FormData) {
     const reversedIsLiked = !article.isLiked;
 
     await prisma.article.update({
-      where:{
+      where: {
         id: articleId,
       },
       data: {
         isLiked: reversedIsLiked,
-      }
-    })
+      },
+    });
 
-    revalidatePath('/');
+    revalidatePath("/");
 
+    return { success: true };
   } catch (err) {
     console.error(err);
+    return { success: false, error: "お気に入りの更新に失敗しました" };
   }
 }

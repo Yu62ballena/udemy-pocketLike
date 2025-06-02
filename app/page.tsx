@@ -47,8 +47,6 @@ export default async function Home(props: HomeProps) {
     includeTotalCount: true,
   });
 
-  console.log("初期データ:", initialData.data?.length, "件");
-
   // initialDataが取得出来なかった場合の処理
   if (!initialData.success || !initialData.data) {
     return (

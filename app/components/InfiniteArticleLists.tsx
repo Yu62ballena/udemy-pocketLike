@@ -29,7 +29,6 @@ function InfiniteArticleLists({
 
   // 初期データが変更されたときにstateをリセット
   useEffect(() => {
-    console.log("初期データ更新：", initialArticles.length, "件");
     setArticles(initialArticles);
     setNextCursor(initialNextCursor);
     setHasMore(initialHasMore);

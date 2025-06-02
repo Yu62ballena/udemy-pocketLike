@@ -37,7 +37,10 @@ export async function toggleArchive(formData: FormData) {
 
     revalidatePath('/');
 
+    return { success: true};
+
   } catch (err) {
     console.error(err);
+    return { success: false, error: "アーカイブの登録に失敗しました"};
   }
 }
