@@ -28,9 +28,7 @@ function InputForm() {
       try {
         // URL登録時の処理
         if (isRegisterMode) {
-          console.log("URL登録開始");
           const url = formData.get("url") as string;
-          console.log("URL:", url);
 
           // zodバリデーション
           const validationResult = urlRegistrationSchema.safeParse({ url });
@@ -44,17 +42,13 @@ function InputForm() {
             return;
           }
 
-          console.log("バリデーション通過");
-
           // ServerActionsの実行
           try {
             const result = await getSiteData(formData);
-            console.log("getSiteData結果:", result);
 
             if (result?.success) {
               // 成功時の処理（フォームクリアなど）
               setSuccess("記事を保存しました！");
-              console.log("記事保存成功！");
 
               // フォームをクリア
               const form = document.querySelector("form") as HTMLFormElement;
@@ -63,7 +57,6 @@ function InputForm() {
               }
 
               router.refresh();
-              console.log("router.refresh実行");
             } else {
               // getSiteDataからの失敗の戻り値があったとき
               setError("記事の保存に失敗しました");

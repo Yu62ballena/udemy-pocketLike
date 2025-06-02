@@ -3,7 +3,6 @@
 import { checkUrlExists } from "./check-duplicate";
 import { saveArticle } from "./save-article";
 import { extractUrlData } from "../extract-url-data";
-// import { revalidatePath } from "next/cache";
 
 export const getSiteData = async (formData: FormData) => {
   try {
