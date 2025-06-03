@@ -36,7 +36,6 @@ export const config = {
     },
     // メールアドレスによるログイン制約ここまで
 
-
     session: ({ session, token }) => {
       if (token?.sub) {
         session.user.id = token.sub;
@@ -55,6 +54,7 @@ export const config = {
   },
   pages: {
     signIn: "/signin",
+    error: "/auth/error",
   },
 } satisfies NextAuthConfig;
 

@@ -81,10 +81,10 @@ function InfiniteArticleLists({
     <div className="w-4/5 px-4">
       <div className="flex justify-between mb-4">
         <h2 className="text-4xl font-bold">{title}</h2>
-        <div>
+        {/* <div>
           <span>↑</span>
           <span>↓</span>
-        </div>
+        </div> */}
       </div>
       <hr />
 
