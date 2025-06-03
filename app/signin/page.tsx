@@ -1,35 +1,110 @@
 "use client";
 
-import { signIn, getSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromExtension = searchParams.get("from") === "extension";
 
   useEffect(() => {
-    // 既にログインしている場合はホームページにリダイレクト
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session) {
+    // セッションが読み込み完了して、ログイン済みの場合
+    if (status === "authenticated" && session) {
+      if (fromExtension) {
+        // 拡張機能からのアクセスの場合は成功ページを表示
+        showExtensionSuccess();
+      } else {
+        // 通常のアクセスの場合はホームページにリダイレクト
         router.push("/");
       }
-    };
-    checkSession();
-  }, [router]);
+    }
+  }, [status, session, fromExtension, router]);
 
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn("google", { callbackUrl: "/" });
+      await signIn("google", {
+        callbackUrl: fromExtension ? "/signin?from=extension" : "/",
+      });
     } catch (error) {
       console.error("サインインエラー:", error);
-    } finally {
       setIsLoading(false);
     }
   };
+
+  const showExtensionSuccess = () => {
+    document.body.innerHTML = `
+      <div style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        background-color: #f0f9ff;
+      ">
+        <div style="
+          background: white;
+          padding: 2rem;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          text-align: center;
+          max-width: 500px;
+        ">
+          <div style="
+            width: 60px;
+            height: 60px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+          ">
+            <span style="color: white; font-size: 24px;">✓</span>
+          </div>
+          <h2 style="color: #10b981; margin-bottom: 1rem; font-size: 24px;">
+            ログイン完了！
+          </h2>
+          <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.5;">
+            拡張機能で記事の保存ができるようになりました！<br>
+            このタブを閉じて、保存したいページで拡張機能をクリックしてください。
+          </p>
+          
+          <a href="/" style="
+            background: #6b7280;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            display: inline-block;
+            font-size: 14px;
+          ">
+            アプリを開く
+          </a>
+        </div>
+      </div>
+    `;
+
+    // 5秒後に自動でページを閉じる
+    setTimeout(() => {
+      window.close();
+    }, 5000);
+  };
+
+  // ローディング中は何も表示しない
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -47,7 +122,9 @@ export default function SignIn() {
           my-pocketにサインイン
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          記事を保存・管理するためにサインインしてください
+          {fromExtension
+            ? "拡張機能を使用するためにサインインしてください"
+            : "記事を保存・管理するためにサインインしてください"}
         </p>
       </div>
 
@@ -90,12 +167,39 @@ export default function SignIn() {
             </button>
           </div>
 
+          {fromExtension && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-md">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-blue-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-blue-700">
+                    拡張機能からのアクセスです。ログイン後、このページは自動で閉じられます。
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="mt-6">
             <div className="text-center text-sm text-gray-600">
               <p>
                 サインインすることで、
                 <br />
-                利用規約とプライバシーポリシーに<br />同意したものとみなされます
+                利用規約とプライバシーポリシーに
+                <br />
+                同意したものとみなされます
               </p>
             </div>
           </div>
