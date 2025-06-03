@@ -5,9 +5,9 @@ type ArticleListsProps = {
   articleData: Article;
 };
 
-function CategoryButton({ _articleData }: ArticleListsProps) {
+function CategoryButton({ articleData }: ArticleListsProps) {
 
-
+console.log(articleData);
 
   const handleCategory = () => {
     console.log("handleCategoryに入りました");

@@ -2,7 +2,6 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { Article } from "@prisma/client";
 import { toggleLike } from "../actions/articles/toggle-like";
 import { useOptimistic, useTransition, useState, useEffect } from "react";
-import { Instrument_Sans } from "next/font/google";
 
 type ArticleListsProps = {
   articleData: Article;

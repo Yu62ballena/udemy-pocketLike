@@ -1,17 +1,27 @@
 import Logo from "./Logo";
 import InputFormGroup from "./InputFormGroup";
 import UserIcon from "./UserIcon";
+import BurgerBtn from "./BurgerBtn";
+import { Dispatch, SetStateAction } from "react";
 
-function Header() {
+interface HeaderProps {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+
+
+function Header({isSidebarOpen, setIsSidebarOpen}:HeaderProps) {
   return (
-    <>
-      <header className="flex justify-between items-center h-16">
+    <div className="sticky top-0 bg-white z-100">
+      <header className="flex justify-between items-center h-16 px-2 md:px-0">
         <Logo />
         <InputFormGroup />
         <UserIcon />
+        <BurgerBtn  isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       </header>
-      <hr className="mb-10" />
-    </>
+      <hr className="mb-8" />
+    </div>
   );
 }
 

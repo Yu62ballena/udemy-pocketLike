@@ -13,7 +13,7 @@ function UserIcon() {
   }
 
   return (
-    <div className="relative h-4/5 aspect-square flex items-center">
+    <div className="hidden md:flex relative h-4/5 aspect-square items-center">
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-colors"

@@ -17,7 +17,7 @@ function Logo() {
             sizes="80px"
           />
         </div>
-        <h1 className="text-xl font-bold">my pocket</h1>
+        <h1 className="text-xl font-bold hidden md:block">my pocket</h1>
       </Link>
     </div>
   );

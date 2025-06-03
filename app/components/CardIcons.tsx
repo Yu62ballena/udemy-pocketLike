@@ -10,7 +10,7 @@ type ArticleListsProps = {
 
 function CardIcons({ articleData }: ArticleListsProps) {
   return (
-    <div className="flex justify-between gap-5 items-center text-xl">
+    <div className="flex justify-start md:justify-between gap-5 items-center text-xl">
       {/* お気に入りボタン */}
       <LikeButton articleData={articleData} />
 

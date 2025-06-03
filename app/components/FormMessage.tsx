@@ -6,10 +6,14 @@ type FormMessageProps = {
   setError: Dispatch<SetStateAction<string | null>>;
   success: string | null;
   setSuccess: Dispatch<SetStateAction<string | null>>;
-}
+};
 
-
-function FormMessage({error, setError, success, setSuccess}: FormMessageProps) {
+function FormMessage({
+  error,
+  setError,
+  success,
+  setSuccess,
+}: FormMessageProps) {
   // エラーメッセージのタイマー
   useEffect(() => {
     if (error) {
@@ -19,7 +23,7 @@ function FormMessage({error, setError, success, setSuccess}: FormMessageProps) {
 
       return () => clearTimeout(timer);
     }
-  }, [error]);
+  }, [error, setError]);
 
   // 成功メッセージのタイマー
   useEffect(() => {
@@ -30,7 +34,7 @@ function FormMessage({error, setError, success, setSuccess}: FormMessageProps) {
 
       return () => clearTimeout(timer);
     }
-  }, [success]);
+  }, [success, setSuccess]);
   return (
     <>
       {/* 成功メッセージ */}

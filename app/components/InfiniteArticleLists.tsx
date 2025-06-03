@@ -78,13 +78,9 @@ function InfiniteArticleLists({
   }, [loadMore]);
 
   return (
-    <div className="w-4/5 px-4">
+    <div className="w-full lg:w-4/5 px-4">
       <div className="flex justify-between mb-4">
         <h2 className="text-4xl font-bold">{title}</h2>
-        {/* <div>
-          <span>↑</span>
-          <span>↓</span>
-        </div> */}
       </div>
       <hr />
 
@@ -99,32 +95,33 @@ function InfiniteArticleLists({
       </div>
 
       {/* ローディング表示 */}
-      {isLoading && (
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-600">読み込み中...</p>
-        </div>
-      )}
 
-      {/* これ以上記事がない場合 */}
-      {!hasMore && articles.length > 0 && (
-        <div className="text-center py-8">
-          <p className="text-gray-500">すべての記事を表示しました</p>
-        </div>
-      )}
+        {isLoading && (
+          <div className="text-center py-8">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="mt-2 text-gray-600">読み込み中...</p>
+          </div>
+        )}
 
-      {/* 手動読み込みボタン（オプション） */}
-      {hasMore && !isLoading && (
-        <div className="text-center py-8">
-          <button
-            onClick={loadMore}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            さらに読み込む
-          </button>
-        </div>
-      )}
-    </div>
+        {/* これ以上記事がない場合 */}
+        {!hasMore && articles.length > 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">すべての記事を表示しました</p>
+          </div>
+        )}
+
+        {/* 手動読み込みボタン（オプション） */}
+        {hasMore && !isLoading && (
+          <div className="text-center py-8">
+            <button
+              onClick={loadMore}
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              さらに読み込む
+            </button>
+          </div>
+        )}
+      </div>
   );
 }
 

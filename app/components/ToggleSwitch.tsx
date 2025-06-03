@@ -11,7 +11,7 @@ function ToggleSwitch({
 }: ToggleSwitchProps) {
   return (
     <div className="flex items-center gap-2 whitespace-nowrap">
-      <span className="text-sm text-gray-600">URL登録</span>
+      <span className="text-sm text-gray-600 hidden md:block">URL登録</span>
       <button
         type="button"
         onClick={() => setIsRegisterMode(!isRegisterMode)}

@@ -1,11 +1,9 @@
 import InfiniteArticleLists from "./components/InfiniteArticleLists";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
 import { getPageTitle, getWhereCondition } from "@/constants/filterItems";
 import { Prisma } from "@prisma/client";
 import { getArticles } from "./actions/articles/get-articles";
 import { getCurrentUser } from "@/lib/auth-helpers";
-// import ArticleLists from "./components/ArticleLists";
+import MobileLayout from "./components/MobileLayout";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -17,7 +15,6 @@ interface HomeProps {
 export default async function Home(props: HomeProps) {
   // 認証
   const user = await getCurrentUser();
-  console.log("user", user);
 
   const resolvedSearchParams = await props.searchParams;
   const listtype = resolvedSearchParams.listtype || "default";
@@ -57,7 +54,7 @@ export default async function Home(props: HomeProps) {
   if (!initialData.success || !initialData.data) {
     return (
       <div className="w-11/12 mx-auto">
-        <Header />
+        {/* <Header />
         <div className="flex justify-between gap-10">
           <Sidebar />
           <div className="w-4/5 px-4">
@@ -69,25 +66,20 @@ export default async function Home(props: HomeProps) {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
 
   return (
-    <div className="w-11/12 mx-auto">
-      <Header />
-
-      <div className="flex justify-between gap-10">
-        <Sidebar />
-        <InfiniteArticleLists
-          title={title}
-          whereCondition={whereCondition}
-          initialArticles={initialData.data}
-          initialNextCursor={initialData.nextCursor}
-          initialHasMore={initialData.hasMore}
-        />
-      </div>
-    </div>
+    <MobileLayout>
+      <InfiniteArticleLists
+        title={title}
+        whereCondition={whereCondition}
+        initialArticles={initialData.data}
+        initialNextCursor={initialData.nextCursor}
+        initialHasMore={initialData.hasMore}
+      />
+    </MobileLayout>
   );
 }
