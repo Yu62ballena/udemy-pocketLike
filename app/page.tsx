@@ -20,7 +20,6 @@ export default async function Home(props: HomeProps) {
   const listtype = resolvedSearchParams.listtype || "default";
   const searchQuery = resolvedSearchParams.q;
 
-  // const userId = "temp-user-123";
   const userId = user.id;
 
   let title: string = "記事一覧";
@@ -54,19 +53,11 @@ export default async function Home(props: HomeProps) {
   if (!initialData.success || !initialData.data) {
     return (
       <div className="w-11/12 mx-auto">
-        {/* <Header />
-        <div className="flex justify-between gap-10">
-          <Sidebar />
-          <div className="w-4/5 px-4">
-            <h2 className="text-4xl font-bold">{title}</h2>
-            <hr />
-            <div className="p-4">
-              <p className="text-red-500">
-                {initialData.error || "記事の取得に失敗しました"}
-              </p>
-            </div>
-          </div>
-        </div> */}
+        <MobileLayout>
+          <p className="text-red-500">
+            {initialData.error || "記事の取得に失敗しました"}
+          </p>
+        </MobileLayout>
       </div>
     );
   }

@@ -43,7 +43,7 @@ function MobileLayout({ children }: MobileLayoutProps) {
             onClick={closeSidebar}
           />
         )}
-        <Sidebar isSidebarOpen={isSidebarOpen} />
+        <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
         {children}
       </div>
     </div>
