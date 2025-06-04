@@ -58,3 +58,7 @@ OpenAI/Claude APIで記事要約生成
 まずはオープンソース・セルフホスト推奨
 フリーミアム or 完全無料での差別化検討
 Pocketとの差別化要素として独自機能追加
+
+
+// https://claude.ai/chat/04249d93-994d-471a-84af-6251fc633ec7
+// ここのチャットでextract-url-data.tsのコードを説明してもらった

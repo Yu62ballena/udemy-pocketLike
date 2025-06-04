@@ -1,8 +1,5 @@
 "use server";
 
-// https://claude.ai/chat/04249d93-994d-471a-84af-6251fc633ec7
-// ここのチャットでこの中のコードを説明してもらった
-
 import { JSDOM } from "jsdom";
 
 export interface ArticleData {
@@ -13,12 +10,11 @@ export interface ArticleData {
   publishedAt: string;
   thumbnail: string;
   content: string;
-  isLiked?: boolean,
-  isArchived?: boolean,
+  isLiked?: boolean;
+  isArchived?: boolean;
 }
 
 export async function extractUrlData(formData: FormData): Promise<ArticleData> {
-
   const url = formData.get("url") as string;
 
   if (!url) {
@@ -88,7 +84,7 @@ export async function extractUrlData(formData: FormData): Promise<ArticleData> {
           );
           scripts.forEach((el) => el.remove());
 
-          return element.textContent?.trim().slice(0, 1000) || ""; // 最初の1000文字
+          return element.textContent?.trim().slice(0, 300) || ""; // 最初の300文字
         }
       }
 
