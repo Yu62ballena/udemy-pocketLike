@@ -12,23 +12,23 @@ function SidebarUserInfo() {
               <img
                 src={session.user.image}
                 alt="ユーザーアイコン"
-                className="w-10 h-10 rounded-full"
+                className="w-12 md:w-14 h-12 md:h-14 rounded-full"
               />
             ) : (
-              <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-12 md:w-14 h-12 md:h-14 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
                 {session.user.name?.[0]?.toUpperCase() || "U"}
               </div>
             )}
             <div>
-              <p className="font-medium text-sm">{session.user.name}</p>
-              <p className="text-xs text-gray-500">{session.user.email}</p>
+              <p className="font-medium text-lg md:text-xl">{session.user.name}</p>
+              <p className="text-xs md:text-lg text-gray-500">{session.user.email}</p>
             </div>
           </div>
 
           {/* ログアウトボタン */}
           <button
             onClick={() => signOut({ callbackUrl: "/signin" })}
-            className="mt-3 w-full text-left text-sm text-red-600 hover:text-red-800"
+            className="mt-5 w-full text-left text-lg text-red-600 hover:text-red-800"
           >
             ログアウト
           </button>

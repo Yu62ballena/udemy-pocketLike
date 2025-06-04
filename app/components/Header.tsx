@@ -13,7 +13,7 @@ interface HeaderProps {
 
 function Header({isSidebarOpen, setIsSidebarOpen}:HeaderProps) {
   return (
-    <div className="sticky top-0 bg-white z-100">
+    <div className="sticky top-0 bg-white z-100 w-full px-0 md:px-4 lg:w-11/12 mx-auto">
       <header className="flex justify-between items-center h-16 px-2 md:px-0">
         <Logo />
         <InputFormGroup />

@@ -7,10 +7,10 @@ type ArticleListsProps = {
 
 function CardImage({ articleData }: ArticleListsProps) {
   return (
-    <div className="relative w-full h-40">
+    <div className="relative w-full h-full">
       {articleData.thumbnail ? (
         <Image
-          className="object-cover object-center"
+          className="object-cover md:object-contain object-center md:object-top"
           src={articleData.thumbnail}
           alt={articleData.title}
           fill={true}

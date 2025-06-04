@@ -10,7 +10,7 @@ function SidebarItem({ content }: SidebarItemProps) {
 
   return (
     <li>
-      <Link href={content.href} className="flex items-center gap-2">
+      <Link href={content.href} className="flex items-center gap-3 text-2xl lg:text-xl">
         <IconComponent/>
         {content.name}
       </Link>

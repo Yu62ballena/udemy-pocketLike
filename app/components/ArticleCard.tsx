@@ -24,23 +24,32 @@ function ArticleCard({ articleData }: ArticleListsProps) {
           />
           <div className="flex justify-between flex-col-reverse md:flex-row gap-8">
             {/* 左側 */}
-            <div className="w-full md:w-3/4 flex flex-col">
+            <div className="w-full md:w-3/5 lg:w-3/4 flex flex-col">
               {/* タイトル部分 */}
               <div className="mb-4">
-                <h3 className="font-bold text-xl mb-1">{articleData.title}</h3>
-                <span className="text-gray-400 text-sm">
+                <h3 className="font-bold text-lg md:text-xl mb-1">{articleData.title}</h3>
+                <span className="text-gray-400 text-xs md:text-sm">
                   {articleData.siteName}
                 </span>
               </div>
 
               {/* description / 記事抜粋 */}
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <p>{articleData.description}</p>
+              </div> */}
+              <div className="mb-4">
+                <p className="line-clamp-3 text-gray-700 text-base">
+                  {articleData.description ||
+                    (articleData.content
+                      ? articleData.content.slice(0, 200) + "..."
+                      : "") ||
+                    "記事の説明がありません"}
+                </p>
               </div>
             </div>
 
             {/* 右側 （サムネ）*/}
-            <div className="w-full md:w-1/4 pointer-events-none">
+            <div className="w-full md:w-2/5 lg:w-1/4 pointer-events-none aspect-[16/9] md:aspect-[3/2]">
               <CardImage articleData={articleData} />
             </div>
           </div>

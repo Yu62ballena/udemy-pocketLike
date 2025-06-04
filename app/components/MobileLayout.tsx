@@ -32,10 +32,10 @@ function MobileLayout({ children }: MobileLayoutProps) {
 }, [isSidebarOpen]);
 
   return (
-    <div className="w-full md:w-11/12 mx-auto">
+    <div>
       <Header isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
-      <div className="lg:flex justify-between gap-10">
+      <div className="lg:flex justify-between gap-10 w-full md:w-11/12 mx-auto">
         {/* オーバーレイ（モバイル時のみ） */}
         {isSidebarOpen && (
           <div

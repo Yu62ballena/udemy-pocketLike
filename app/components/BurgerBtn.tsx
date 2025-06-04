@@ -9,7 +9,7 @@ interface BurgerBtnProps {
 
 function BurgerBtn({isSidebarOpen, setIsSidebarOpen}:BurgerBtnProps) {
   return (
-    <div className="md:hidden flex items-center">
+    <div className="lg:hidden flex items-center">
       <button
         className="text-4xl"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}

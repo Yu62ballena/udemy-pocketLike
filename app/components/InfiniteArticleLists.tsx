@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
 import ArticleCard from "./ArticleCard";
-import { getArticles } from "../actions/articles/get-articles";
 import { Prisma, Article } from "@prisma/client";
+import LoadingIndicator from "./LoadingIndicator";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import { useArticleLoader } from "@/hooks/useArticleLoader";
 
 type InfiniteArticleListsProps = {
   title: string;
@@ -20,67 +21,26 @@ function InfiniteArticleLists({
   initialNextCursor,
   initialHasMore,
 }: InfiniteArticleListsProps) {
-  const [articles, setArticles] = useState<Article[]>(initialArticles);
-  const [nextCursor, setNextCursor] = useState<string | null>(
-    initialNextCursor
-  );
-  const [hasMore, setHasMore] = useState(initialHasMore);
-  const [isLoading, setIsLoading] = useState(false);
 
-  // 初期データが変更されたときにstateをリセット
-  useEffect(() => {
-    setArticles(initialArticles);
-    setNextCursor(initialNextCursor);
-    setHasMore(initialHasMore);
-  }, [initialArticles, initialHasMore, initialNextCursor]);
-
-  // 次のページを読み込む関数
-  const loadMore = useCallback(async () => {
-    if (!hasMore || isLoading || !nextCursor) return;
-
-    setIsLoading(true);
-
-    try {
-      const result = await getArticles(whereCondition, {
-        cursor: nextCursor,
-        limit: 10,
-      });
-
-      if (result.success && result.data) {
-        // 既存の記事に新しい記事を追加
-        setArticles((prev) => [...prev, ...result.data!]);
-        setNextCursor(result.nextCursor);
-        setHasMore(result.hasMore);
-      }
-    } catch (error) {
-      console.error("記事読み込みエラー:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [whereCondition, nextCursor, hasMore, isLoading]);
+  // ページを読み込む
+  const { articles, hasMore, isLoading, loadMore } = useArticleLoader({
+    whereCondition,
+    initialArticles,
+    initialNextCursor,
+    initialHasMore,
+  });
 
   // スクロール監視
-  useEffect(() => {
-    const handleScroll = () => {
-      // ページの下部に近づいたら読み込み開始
-      const scrollHeight = document.documentElement.scrollHeight;
-      const scrollTop = document.documentElement.scrollTop;
-      const clientHeight = document.documentElement.clientHeight;
-
-      // 下から200px以内に来たら次のページを読み込み
-      if (scrollHeight - scrollTop - clientHeight < 200) {
-        loadMore();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMore]);
+  useInfiniteScroll({
+    loadMore,
+    hasMore,
+    isLoading,
+  });
 
   return (
     <div className="w-full lg:w-4/5 px-4">
       <div className="flex justify-between mb-4">
-        <h2 className="text-4xl font-bold">{title}</h2>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold">{title}</h2>
       </div>
       <hr />
 
@@ -95,33 +55,13 @@ function InfiniteArticleLists({
       </div>
 
       {/* ローディング表示 */}
-
-        {isLoading && (
-          <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p className="mt-2 text-gray-600">読み込み中...</p>
-          </div>
-        )}
-
-        {/* これ以上記事がない場合 */}
-        {!hasMore && articles.length > 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500">すべての記事を表示しました</p>
-          </div>
-        )}
-
-        {/* 手動読み込みボタン（オプション） */}
-        {hasMore && !isLoading && (
-          <div className="text-center py-8">
-            <button
-              onClick={loadMore}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              さらに読み込む
-            </button>
-          </div>
-        )}
-      </div>
+      <LoadingIndicator
+        isLoading={isLoading}
+        hasMore={hasMore}
+        articlesLength={articles.length}
+        loadMore={loadMore}
+      />
+    </div>
   );
 }
 
