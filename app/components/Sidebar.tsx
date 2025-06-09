@@ -16,7 +16,7 @@ function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
       } transform transition-transform will-change-transform duration-200 ease-out lg:translate-x-0 flex flex-col justify-between`}
     >
       {/* メインコンテンツエリア（スクロール対象） */}
-      <div className="overflow-y-auto flex-1">
+      <div className="overflow-y-auto">
         <SidebarContents
           title="フィルター"
           contents={filterItems}
