@@ -7,7 +7,7 @@ function SidebarUserInfo() {
   return (
     <>
       {session?.user && (
-        <div className="px-4 pb-4 border-t bg-white lg:hidden">
+        <div className="p-4 border-t bg-white lg:hidden">
           <div className="flex items-center gap-3 mb-4">
             {session.user.image ? (
               <div className="relative w-12 h-12 flex-shrink-0 rounded-full overflow-hidden">
