@@ -13,27 +13,30 @@ function MobileLayout({ children }: MobileLayoutProps) {
 
   const closeSidebar = () => {
     setIsSidebarOpen(() => false);
-  }
+  };
 
   // サイドバーを開いているときにスクロール禁止
   useEffect(() => {
-  if (isSidebarOpen) {
-    const scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-  } else {
-    const scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
-  }
-}, [isSidebarOpen]);
+    if (isSidebarOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    }
+  }, [isSidebarOpen]);
 
   return (
     <div>
-      <Header isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
 
       <div className="lg:flex justify-between gap-10 w-full md:w-11/12 mx-auto">
         {/* オーバーレイ（モバイル時のみ） */}
@@ -43,7 +46,10 @@ function MobileLayout({ children }: MobileLayoutProps) {
             onClick={closeSidebar}
           />
         )}
-        <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
         {children}
       </div>
     </div>
