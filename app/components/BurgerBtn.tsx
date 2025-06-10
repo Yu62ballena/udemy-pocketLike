@@ -1,4 +1,4 @@
-import { FaBurger } from "react-icons/fa6";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { Dispatch, SetStateAction } from "react";
 
 
@@ -14,7 +14,7 @@ function BurgerBtn({isSidebarOpen, setIsSidebarOpen}:BurgerBtnProps) {
         className="text-4xl"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
-        <FaBurger />
+        <GiHamburgerMenu />
       </button>
     </div>
   );

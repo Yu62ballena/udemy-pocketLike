@@ -1,43 +1,23 @@
-"use client";
-
-import { useState } from "react";
-import ToggleSwitch from "./ToggleSwitch";
-import { useFormSubmit } from "@/hooks/useFormSubmit";
-import InputForm from "./InputForm";
-import FormMessage from "./FormMessage";
-
 function InputFormGroup() {
-  // インプットフォーム切り替え用state
-  const [isRegisterMode, setIsRegisterMode] = useState(false);
-
-  // バリデーションをかける
-  const { handleFormSubmit, error, success, isPending, setError, setSuccess } =
-    useFormSubmit(isRegisterMode);
-
   return (
     <div className="flex gap-3 w-3/5 items-center relative">
       <div className="flex gap-3 items-center w-full">
-        {/* トグルスイッチ */}
-        <ToggleSwitch
-          isRegisterMode={isRegisterMode}
-          setIsRegisterMode={setIsRegisterMode}
-        />
-
         {/* インプットフォーム */}
-        <InputForm
-          isRegisterMode={isRegisterMode}
-          isPending={isPending}
-          handleFormSubmit={handleFormSubmit}
-        />
+        <form className="flex gap-3 flex-1">
+          <input
+            type="text"
+            name="url"
+            placeholder="例：https://example.com/article"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+          <button
+            type="submit"
+            className="hidden md:block w-28 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            登録
+          </button>
+        </form>
       </div>
-
-      {/* エラーメッセージ等表示部分 */}
-      <FormMessage 
-        error={error}
-        setError={setError}
-        success={success}
-        setSuccess={setSuccess}
-      />
     </div>
   );
 }
