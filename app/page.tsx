@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { getArticles } from "./actions/articles/get-articles";
 import { getCurrentUser } from "@/lib/auth-helpers";
 import MobileLayout from "./components/MobileLayout";
+import ArticleLists from "./components/ArticleLists";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -64,13 +65,7 @@ export default async function Home(props: HomeProps) {
 
   return (
     <MobileLayout>
-      <InfiniteArticleLists
-        title={title}
-        whereCondition={whereCondition}
-        initialArticles={initialData.data}
-        initialNextCursor={initialData.nextCursor}
-        initialHasMore={initialData.hasMore}
-      />
+      <ArticleLists />
     </MobileLayout>
   );
 }
