@@ -161,7 +161,7 @@ async function ArticleLists() {
               <div className="relative w-full h-full">
                 <Image
                   className="object-cover md:object-contain object-center md:object-top"
-                  src="/sampleImage.jpg"
+                  src="/images/sampleImage3.jpg"
                   alt="サムネイル画像"
                   fill={true}
                   priority
